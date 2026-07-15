@@ -1,0 +1,4 @@
+interface:
+  display_name: 'React Admin Testing'
+  short_description: 'Vitest and RTL guidance for Admin features.'
+  default_prompt: 'Use $react-admin-testing to add focused Vietnamese unit and integration tests for CleanAI Admin behavior using Vitest, React Testing Library, user-event, and MSW.'

@@ -1,0 +1,4 @@
+interface:
+  display_name: 'React Admin Table Workflows'
+  short_description: 'Table-first Admin interaction patterns.'
+  default_prompt: 'Use $react-admin-table-workflows to design a responsive Admin dashboard or record workflow with tables, row actions, and explicit destructive confirmations.'

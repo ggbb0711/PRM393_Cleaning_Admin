@@ -1,0 +1,4 @@
+interface:
+  display_name: 'React Clean Code Architect'
+  short_description: 'Architecture rules for CleanAI React Admin.'
+  default_prompt: 'Use $react-clean-code-architect to implement or review CleanAI Admin code with strict TypeScript, focused components, and repository-consistent architecture.'
