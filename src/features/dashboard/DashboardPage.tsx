@@ -1,6 +1,6 @@
 import { Box, Card, CardContent, CircularProgress, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { adminApi, type AdminDashboardStatsDto } from '../../api/adminApi';
+import { adminApi, type AdminDashboardStatsDto, type MaybeEnveloped } from '../../api/adminApi';
 // Import các component cần thiết từ thư viện recharts
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
@@ -11,7 +11,7 @@ export function DashboardPage() {
   useEffect(() => {
     adminApi.getDashboardStats()
       // Tách vỏ ApiResponse nếu BE đang bọc
-      .then((res: any) => setStats(res.data ? res.data : res))
+      .then((res: MaybeEnveloped<AdminDashboardStatsDto>) => setStats(res.data ? res.data : res))
       .finally(() => setLoading(false));
   }, []);
 

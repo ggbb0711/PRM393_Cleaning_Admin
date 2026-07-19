@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Stack, Box } from '@mui/material';
 import { AdminDataTable, type AdminTableColumn } from '../../components/table/AdminDataTable';
-import { adminApi, type ServiceDto, type CreateServiceDto, type UpdateServiceDto } from '../../api/adminApi';
+import { adminApi, type ServiceDto, type CreateServiceDto, type UpdateServiceDto, type MaybeEnveloped } from '../../api/adminApi';
 
 export function ServicesPage() {
   const [services, setServices] = useState<ServiceDto[]>([]);
@@ -16,8 +16,8 @@ export function ServicesPage() {
       
       // Gọi API lấy dữ liệu từ Backend
       // Data bóc tách từ vỏ bọc nếu Backend có cấu trúc chuẩn như lúc login
-      const responseData = await adminApi.getAllServices();
-      const data = (responseData as any).data ? (responseData as any).data : responseData;
+      const responseData = await adminApi.getAllServices() as MaybeEnveloped<ServiceDto[]>;
+      const data = responseData.data ? responseData.data : responseData;
       
       setServices(data);
       setStatus('success');

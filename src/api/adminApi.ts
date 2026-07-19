@@ -1,6 +1,10 @@
 // src/app/api/adminApi.ts
 import { apiClient } from './apiClient';
 
+// Some backend responses come back already unwrapped, others still wrapped in the
+// {data: T} envelope — callers unwrap defensively with `res.data ?? res`.
+export type MaybeEnveloped<T> = T & { data?: T };
+
 export interface AdminDashboardStatsDto {
   totalClients: number;
   totalWorkers: number;
