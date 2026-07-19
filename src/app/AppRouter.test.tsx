@@ -19,7 +19,7 @@ describe('Admin routing', () => {
       totalClients: 2,
       totalWorkers: 1,
       totalBookings: 1,
-      totalRevenue: 500000
+      totalRevenue: 500000,
     });
 
     renderAdminApp();
@@ -28,7 +28,7 @@ describe('Admin routing', () => {
     await waitFor(() => {
       expect(screen.getByRole('heading', { name: 'Dashboard' })).toBeInTheDocument();
     });
-    
+
     expect(screen.getByText('CleanAI Admin')).toBeInTheDocument();
     expect(screen.getByText('Tổng quan số liệu hệ thống CleanAI.')).toBeInTheDocument();
   });
@@ -36,7 +36,7 @@ describe('Admin routing', () => {
   it('[IT-WEB-FOUNDATION-001-02] hiển thị trang không tìm thấy cho route không hợp lệ', () => {
     // Cũng cần giả lập đã đăng nhập ở test case này để không bị văng ra Login
     localStorage.setItem('admin_access_token', 'fake-test-token');
-    
+
     renderAdminApp('/missing');
 
     expect(screen.getByRole('heading', { name: 'Page not found' })).toBeInTheDocument();

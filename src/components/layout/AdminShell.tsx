@@ -46,11 +46,11 @@ export function AdminShell() {
       const refreshToken = localStorage.getItem('admin_refresh_token');
       if (refreshToken) {
         await apiClient.post('/Auth/logout', {
-          refreshToken: refreshToken
+          refreshToken: refreshToken,
         });
       }
     } catch (error) {
-      console.error("Lỗi khi đăng xuất ở server", error);
+      console.error('Lỗi khi đăng xuất ở server', error);
     } finally {
       localStorage.removeItem('admin_access_token');
       localStorage.removeItem('admin_refresh_token');
@@ -78,16 +78,14 @@ export function AdminShell() {
             }}
             sx={{ borderRadius: 2, mb: 0.5 }}
           >
-            <ListItemIcon sx={{ minWidth: 40 }}>
-              {item.icon}
-            </ListItemIcon>
+            <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
             <ListItemText primary={item.title} />
           </ListItemButton>
         ))}
       </List>
 
       <Box sx={{ flexGrow: 1 }} />
-      
+
       <Divider />
       <List sx={{ px: 1.5, py: 2 }}>
         <ListItemButton onClick={handleLogout} sx={{ borderRadius: 2, color: 'error.main' }}>
@@ -116,16 +114,16 @@ export function AdminShell() {
         <Toolbar>
           {!desktop && (
             <IconButton
-  edge="start"
-  aria-label="Open navigation"
-  onClick={(e) => {
-    setMobileOpen(true);
-    e.currentTarget.blur(); 
-  }}
-  sx={{ mr: 1 }}
->
-  <MenuRounded />
-</IconButton>
+              edge="start"
+              aria-label="Open navigation"
+              onClick={(e) => {
+                setMobileOpen(true);
+                e.currentTarget.blur();
+              }}
+              sx={{ mr: 1 }}
+            >
+              <MenuRounded />
+            </IconButton>
           )}
           <Typography component="span" sx={{ fontWeight: 700 }}>
             Administration workspace

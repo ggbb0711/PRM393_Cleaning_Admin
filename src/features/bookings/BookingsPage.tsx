@@ -9,28 +9,38 @@ export function BookingsPage() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
 
   const fetchBookings = () => {
-    adminApi.getAllBookings()
-      .then((res: unknown) => { 
+    adminApi
+      .getAllBookings()
+      .then((res: unknown) => {
         const payload = res as { data?: BookingAdminDto[] };
-        setBookings(payload.data ? payload.data : (res as BookingAdminDto[])); 
-        setStatus('success'); 
+        setBookings(payload.data ? payload.data : (res as BookingAdminDto[]));
+        setStatus('success');
       })
       .catch(() => setStatus('error'));
   };
 
-  useEffect(() => { fetchBookings(); }, []);
+  useEffect(() => {
+    fetchBookings();
+  }, []);
 
   const columns: AdminTableColumn<BookingAdminDto>[] = [
     { id: 'id', header: 'Mã Đơn', render: (r) => r.id.substring(0, 8) + '...' },
-    { id: 'startTime', header: 'Lịch Làm', render: (r) => new Date(r.scheduledStartTime).toLocaleString('vi-VN') },
+    {
+      id: 'startTime',
+      header: 'Lịch Làm',
+      render: (r) => new Date(r.scheduledStartTime).toLocaleString('vi-VN'),
+    },
     { id: 'price', header: 'Tổng Tiền', render: (r) => `${r.totalPrice.toLocaleString()} VND` },
-    { id: 'status', header: 'Trạng thái', render: (r) => (
-        <Chip 
-          label={r.status} 
-          size="small" 
-          color={r.status === 'Completed' ? 'success' : r.status === 'Cancelled' ? 'error' : 'info'} 
+    {
+      id: 'status',
+      header: 'Trạng thái',
+      render: (r) => (
+        <Chip
+          label={r.status}
+          size="small"
+          color={r.status === 'Completed' ? 'success' : r.status === 'Cancelled' ? 'error' : 'info'}
         />
-      )
+      ),
     },
   ];
 
