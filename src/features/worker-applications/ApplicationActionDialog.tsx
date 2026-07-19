@@ -1,5 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Chip, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Stack } from '@mui/material';
+import {
+  Chip,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Stack,
+} from '@mui/material';
 // Thêm chữ "type" để fix lỗi import
 import { AdminDataTable, type AdminTableColumn } from '../../components/table/AdminDataTable';
 import { adminApi, type WorkerApplicationDto } from '../../api/adminApi';
@@ -10,21 +19,38 @@ export function WorkerApplicationsPage() {
   const [selectedApp, setSelectedApp] = useState<WorkerApplicationDto | null>(null);
 
   const fetchApps = () => {
-    adminApi.getWorkerApplications()
-      .then((res: unknown) => { 
+    adminApi
+      .getWorkerApplications()
+      .then((res: unknown) => {
         const payload = res as { data?: WorkerApplicationDto[] };
-        setApps(payload.data ? payload.data : (res as WorkerApplicationDto[])); 
-        setStatus('success'); 
+        setApps(payload.data ? payload.data : (res as WorkerApplicationDto[]));
+        setStatus('success');
       })
       .catch(() => setStatus('error'));
   };
 
-  useEffect(() => { fetchApps(); }, []);
+  useEffect(() => {
+    fetchApps();
+  }, []);
 
   const columns: AdminTableColumn<WorkerApplicationDto>[] = [
-    { id: 'submittedAt', header: 'Ngày nộp', render: (r) => new Date(r.submittedAt).toLocaleDateString('vi-VN') },
+    {
+      id: 'submittedAt',
+      header: 'Ngày nộp',
+      render: (r) => new Date(r.submittedAt).toLocaleDateString('vi-VN'),
+    },
     { id: 'govId', header: 'CCCD/CMND', render: (r) => r.governmentId || 'N/A' },
-    { id: 'status', header: 'Trạng thái', render: (r) => <Chip label={r.status} size="small" color={r.status === 'pending' ? 'warning' : r.status === 'approved' ? 'success' : 'error'} /> },
+    {
+      id: 'status',
+      header: 'Trạng thái',
+      render: (r) => (
+        <Chip
+          label={r.status}
+          size="small"
+          color={r.status === 'pending' ? 'warning' : r.status === 'approved' ? 'success' : 'error'}
+        />
+      ),
+    },
   ];
 
   return (
@@ -42,13 +68,16 @@ export function WorkerApplicationsPage() {
           fetchApps();
         }}
       />
-      
+
       {/* Component Dialog nằm ngay trong file này */}
-      <ApplicationActionDialog 
+      <ApplicationActionDialog
         key={selectedApp?.id || 'empty'}
-        app={selectedApp} 
-        onClose={() => setSelectedApp(null)} 
-        onSuccess={() => { setSelectedApp(null); fetchApps(); }} 
+        app={selectedApp}
+        onClose={() => setSelectedApp(null)}
+        onSuccess={() => {
+          setSelectedApp(null);
+          fetchApps();
+        }}
       />
     </>
   );
@@ -57,11 +86,20 @@ export function WorkerApplicationsPage() {
 // ----------------------------------------------------
 // COMPONENT DIALOG NẰM GỘP CHUNG FILE
 // ----------------------------------------------------
-function ApplicationActionDialog({ app, onClose, onSuccess }: { app: WorkerApplicationDto | null, onClose: () => void, onSuccess: () => void }) {
+function ApplicationActionDialog({
+  app,
+  onClose,
+  onSuccess,
+}: {
+  app: WorkerApplicationDto | null;
+  onClose: () => void;
+  onSuccess: () => void;
+}) {
   const [reason, setReason] = useState('');
-  
-  // Lấy ID admin đang đăng nhập từ local 
-  const getAdminId = () => localStorage.getItem('admin_profile_id') || '00000000-0000-0000-0000-000000000000';
+
+  // Lấy ID admin đang đăng nhập từ local
+  const getAdminId = () =>
+    localStorage.getItem('admin_profile_id') || '00000000-0000-0000-0000-000000000000';
 
   const handleApprove = () => {
     if (app) adminApi.approveWorker(app.id, getAdminId()).then(onSuccess);
@@ -76,14 +114,29 @@ function ApplicationActionDialog({ app, onClose, onSuccess }: { app: WorkerAppli
       <DialogTitle>Xử lý đơn ứng tuyển thợ</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ mt: 1 }}>
-          <TextField label="Tóm tắt kinh nghiệm" multiline rows={3} disabled value={app?.experienceSummary || ''} />
-          <TextField label="Lý do từ chối (Chỉ nhập nếu Từ chối)" value={reason} onChange={(e) => setReason(e.target.value)} fullWidth />
+          <TextField
+            label="Tóm tắt kinh nghiệm"
+            multiline
+            rows={3}
+            disabled
+            value={app?.experienceSummary || ''}
+          />
+          <TextField
+            label="Lý do từ chối (Chỉ nhập nếu Từ chối)"
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            fullWidth
+          />
         </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Đóng</Button>
-        <Button onClick={handleReject} color="error" variant="contained" disabled={!reason}>Từ chối</Button>
-        <Button onClick={handleApprove} color="success" variant="contained">Duyệt (Approve)</Button>
+        <Button onClick={handleReject} color="error" variant="contained" disabled={!reason}>
+          Từ chối
+        </Button>
+        <Button onClick={handleApprove} color="success" variant="contained">
+          Duyệt (Approve)
+        </Button>
       </DialogActions>
     </Dialog>
   );

@@ -22,7 +22,7 @@ export function AppRouter() {
       <Route element={<ProtectedRoute />}>
         <Route element={<AdminShell />}>
           <Route index element={<DashboardPage />} />
-          
+
           <Route path="worker-applications" element={<WorkerApplicationsPage />} />
           <Route path="accounts" element={<AccountsPage />} />
           <Route path="services" element={<ServicesPage />} />

@@ -1,5 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Stack, Box } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Stack,
+  Box,
+} from '@mui/material';
 // Thêm chữ "type" để fix lỗi import
 import { AdminDataTable, type AdminTableColumn } from '../../components/table/AdminDataTable';
 import { adminApi, type ServiceDto } from '../../api/adminApi';
@@ -15,11 +24,13 @@ export function ServicesPage() {
     // Sử dụng setTimeout để tránh lỗi set-state-in-effect (cập nhật state đồng bộ)
     setTimeout(() => {
       setServices([]);
-      setStatus('success'); 
+      setStatus('success');
     }, 0);
   };
 
-  useEffect(() => { fetchServices(); }, []);
+  useEffect(() => {
+    fetchServices();
+  }, []);
 
   const columns: AdminTableColumn<ServiceDto>[] = [
     { id: 'name', header: 'Tên Dịch Vụ', render: (r) => r.name },
@@ -30,7 +41,13 @@ export function ServicesPage() {
   return (
     <>
       <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-end' }}>
-        <Button variant="contained" onClick={() => { setSelectedService(null); setOpenDialog(true); }}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            setSelectedService(null);
+            setOpenDialog(true);
+          }}
+        >
           + Thêm Dịch Vụ
         </Button>
       </Box>
@@ -41,21 +58,27 @@ export function ServicesPage() {
         status={status}
         getRowId={(r) => r.id}
         getRowLabel={(r) => r.name}
-        onEdit={(r) => { setSelectedService(r); setOpenDialog(true); }}
+        onEdit={(r) => {
+          setSelectedService(r);
+          setOpenDialog(true);
+        }}
         onDelete={(r) => adminApi.archiveService(r.id).then(fetchServices)}
         onRetry={() => {
           setStatus('loading');
           fetchServices();
         }}
       />
-      
+
       {/* Component Dialog nằm ngay trong file này */}
-      <ServiceFormDialog 
+      <ServiceFormDialog
         key={selectedService?.id || 'new'}
         open={openDialog}
         service={selectedService}
         onClose={() => setOpenDialog(false)}
-        onSuccess={() => { setOpenDialog(false); fetchServices(); }}
+        onSuccess={() => {
+          setOpenDialog(false);
+          fetchServices();
+        }}
       />
     </>
   );
@@ -64,10 +87,27 @@ export function ServicesPage() {
 // ----------------------------------------------------
 // COMPONENT DIALOG NẰM GỘP CHUNG FILE
 // ----------------------------------------------------
-function ServiceFormDialog({ open, service, onClose, onSuccess }: { open: boolean, service: ServiceDto | null, onClose: () => void, onSuccess: () => void }) {
+function ServiceFormDialog({
+  open,
+  service,
+  onClose,
+  onSuccess,
+}: {
+  open: boolean;
+  service: ServiceDto | null;
+  onClose: () => void;
+  onSuccess: () => void;
+}) {
   // Lấy dữ liệu mặc định an toàn không cần useEffect
   const [formData, setFormData] = useState<Partial<ServiceDto>>(
-    service || { name: '', description: '', propertyType: 'House', unitType: 'Hour', basePrice: 0, minimumHours: 2 }
+    service || {
+      name: '',
+      description: '',
+      propertyType: 'House',
+      unitType: 'Hour',
+      basePrice: 0,
+      minimumHours: 2,
+    },
   );
 
   const handleSave = () => {
@@ -84,14 +124,30 @@ function ServiceFormDialog({ open, service, onClose, onSuccess }: { open: boolea
       <DialogTitle>{service ? 'Sửa dịch vụ' : 'Thêm dịch vụ mới'}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ mt: 1 }}>
-          <TextField label="Tên dịch vụ" value={formData.name || ''} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
-          <TextField label="Giá cơ bản" type="number" value={formData.basePrice || 0} onChange={(e) => setFormData({ ...formData, basePrice: Number(e.target.value) })} />
-          <TextField label="Giờ tối thiểu" type="number" value={formData.minimumHours || 0} onChange={(e) => setFormData({ ...formData, minimumHours: Number(e.target.value) })} />
+          <TextField
+            label="Tên dịch vụ"
+            value={formData.name || ''}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          />
+          <TextField
+            label="Giá cơ bản"
+            type="number"
+            value={formData.basePrice || 0}
+            onChange={(e) => setFormData({ ...formData, basePrice: Number(e.target.value) })}
+          />
+          <TextField
+            label="Giờ tối thiểu"
+            type="number"
+            value={formData.minimumHours || 0}
+            onChange={(e) => setFormData({ ...formData, minimumHours: Number(e.target.value) })}
+          />
         </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Hủy</Button>
-        <Button onClick={handleSave} variant="contained">Lưu</Button>
+        <Button onClick={handleSave} variant="contained">
+          Lưu
+        </Button>
       </DialogActions>
     </Dialog>
   );

@@ -19,7 +19,7 @@ import { apiClient } from '../../api/apiClient';
 export function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -43,7 +43,7 @@ export function LoginPage() {
       // Dùng cú pháp an toàn đề phòng lúc có lúc không bọc
       const data = response.data.data ? response.data.data : response.data;
 
-      console.log("Dữ liệu thật bóc ra từ vỏ:", data);
+      console.log('Dữ liệu thật bóc ra từ vỏ:', data);
 
       // Kiểm tra quyền truy cập an toàn, đề phòng data.role bị undefined
       if (!data.role || data.role.toLowerCase() !== 'admin') {
@@ -59,8 +59,8 @@ export function LoginPage() {
 
       // Chuyển hướng vào trang quản trị
       navigate(from, { replace: true });
-      
-    } catch (err: unknown) { // Đã sửa lỗi any ở đây
+    } catch (err: unknown) {
+      // Đã sửa lỗi any ở đây
       if (axios.isAxiosError(err)) {
         // Xử lý lỗi trả về từ backend (AppException)
         if (err.response?.data?.message) {
@@ -77,7 +77,11 @@ export function LoginPage() {
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}
+    >
       <Card variant="outlined" sx={{ width: '100%', borderRadius: 2, boxShadow: 3 }}>
         <CardContent sx={{ p: 4 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>

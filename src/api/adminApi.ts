@@ -78,20 +78,27 @@ export interface BookingAdminDto {
 }
 
 export const adminApi = {
-  getDashboardStats: () => apiClient.get<AdminDashboardStatsDto>('/Admin/dashboard-stats').then(res => res.data),
-  
-  getAccounts: () => apiClient.get<AccountAdminDto[]>('/Admin/accounts').then(res => res.data),
-  changeAccountStatus: (id: string, status: string) => apiClient.put(`/Admin/accounts/${id}/status`, { status }),
+  getDashboardStats: () =>
+    apiClient.get<AdminDashboardStatsDto>('/Admin/dashboard-stats').then((res) => res.data),
 
-  getWorkerApplications: () => apiClient.get<WorkerApplicationDto[]>('/Admin/worker-applications').then(res => res.data),
-  approveWorker: (id: string, adminId: string) => apiClient.put(`/Admin/worker-applications/${id}/approve`, { adminId }),
-  rejectWorker: (id: string, adminId: string, reason: string) => apiClient.put(`/Admin/worker-applications/${id}/reject`, { adminId, reason }),
+  getAccounts: () => apiClient.get<AccountAdminDto[]>('/Admin/accounts').then((res) => res.data),
+  changeAccountStatus: (id: string, status: string) =>
+    apiClient.put(`/Admin/accounts/${id}/status`, { status }),
+
+  getWorkerApplications: () =>
+    apiClient.get<WorkerApplicationDto[]>('/Admin/worker-applications').then((res) => res.data),
+  approveWorker: (id: string, adminId: string) =>
+    apiClient.put(`/Admin/worker-applications/${id}/approve`, { adminId }),
+  rejectWorker: (id: string, adminId: string, reason: string) =>
+    apiClient.put(`/Admin/worker-applications/${id}/reject`, { adminId, reason }),
 
   // --- THÊM HÀM LẤY DANH SÁCH TẤT CẢ DỊCH VỤ VÀO ĐÂY ---
-  getAllServices: () => apiClient.get<ServiceDto[]>('/Admin/services').then(res => res.data),
-  createService: (data: CreateServiceDto) => apiClient.post<ServiceDto>('/Admin/services', data).then(res => res.data),
-  updateService: (id: string, data: UpdateServiceDto) => apiClient.put<ServiceDto>(`/Admin/services/${id}`, data).then(res => res.data),
+  getAllServices: () => apiClient.get<ServiceDto[]>('/Admin/services').then((res) => res.data),
+  createService: (data: CreateServiceDto) =>
+    apiClient.post<ServiceDto>('/Admin/services', data).then((res) => res.data),
+  updateService: (id: string, data: UpdateServiceDto) =>
+    apiClient.put<ServiceDto>(`/Admin/services/${id}`, data).then((res) => res.data),
   archiveService: (id: string) => apiClient.delete(`/Admin/services/${id}`),
 
-  getAllBookings: () => apiClient.get<BookingAdminDto[]>('/Admin/bookings').then(res => res.data),
+  getAllBookings: () => apiClient.get<BookingAdminDto[]>('/Admin/bookings').then((res) => res.data),
 };
