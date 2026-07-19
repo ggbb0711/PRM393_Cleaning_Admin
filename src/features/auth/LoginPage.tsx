@@ -1,4 +1,3 @@
-// src/app/features/auth/LoginPage.tsx
 import LockOutlined from '@mui/icons-material/LockOutlined';
 import {
   Alert,
@@ -14,17 +13,8 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Import thêm axios để kiểm tra lỗi
+import axios from 'axios';
 import { apiClient } from '../../api/apiClient';
-
-// Định nghĩa interface hứng dữ liệu từ AuthResponseDto của .NET
-interface AuthResponse {
-  accessToken: string;
-  refreshToken: string;
-  role: string;
-  profileId: string;
-  fullName: string;
-}
 
 export function LoginPage() {
   const navigate = useNavigate();

@@ -1,0 +1,7 @@
+services:
+  admin:
+    build: .
+    image: buingoctam/cleaning-admin:latest
+    container_name: cleaning_admin
+    ports:
+      - "5173:80"
