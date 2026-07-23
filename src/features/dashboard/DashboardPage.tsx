@@ -99,12 +99,7 @@ export function DashboardPage() {
                 }}
               />
               <Legend wrapperStyle={{ paddingTop: '20px' }} />
-              <Bar
-                dataKey="Số lượng"
-                fill="#1976d2"
-                radius={[6, 6, 0, 0]}
-                barSize={60}
-              />
+              <Bar dataKey="Số lượng" fill="#1976d2" radius={[6, 6, 0, 0]} barSize={60} />
             </BarChart>
           </ResponsiveContainer>
         </Box>

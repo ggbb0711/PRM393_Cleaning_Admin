@@ -37,7 +37,7 @@ export interface ServiceDto {
   basePrice: number;
   minimumHours: number;
   isActive: boolean;
-  bookingFormSchema?: string; 
+  bookingFormSchema?: string;
 }
 
 export interface CreateServiceDto {

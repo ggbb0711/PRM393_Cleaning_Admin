@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { renderAdminApp } from '../test/renderAdminApp';
-import { adminApi } from '../api/adminApi'; 
+import { adminApi } from '../api/adminApi';
 
 describe('Admin routing', () => {
   beforeEach(() => {
