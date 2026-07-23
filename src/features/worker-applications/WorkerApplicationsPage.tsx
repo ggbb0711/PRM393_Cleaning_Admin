@@ -9,7 +9,6 @@ import {
   TextField,
   Stack,
 } from '@mui/material';
-// Thêm chữ "type" để sửa lỗi: does not provide an export named 'AdminTableColumn'
 import { AdminDataTable, type AdminTableColumn } from '../../components/table/AdminDataTable';
 import { adminApi, type WorkerApplicationDto } from '../../api/adminApi';
 
@@ -21,9 +20,8 @@ export function WorkerApplicationsPage() {
   const fetchApps = () => {
     adminApi
       .getWorkerApplications()
-      .then((res: unknown) => {
-        const payload = res as { data?: WorkerApplicationDto[] };
-        setApps(payload.data ? payload.data : (res as WorkerApplicationDto[]));
+      .then((data) => {
+        setApps(data);
         setStatus('success');
       })
       .catch(() => setStatus('error'));
@@ -69,7 +67,6 @@ export function WorkerApplicationsPage() {
         }}
       />
 
-      {/* Kỹ thuật key trick giúp reset state tự động khi đổi App khác */}
       <ApplicationActionDialog
         key={selectedApp?.id || 'empty'}
         app={selectedApp}
@@ -83,9 +80,6 @@ export function WorkerApplicationsPage() {
   );
 }
 
-// ----------------------------------------------------
-// COMPONENT DIALOG NẰM GỘP CHUNG FILE
-// ----------------------------------------------------
 function ApplicationActionDialog({
   app,
   onClose,
@@ -97,7 +91,6 @@ function ApplicationActionDialog({
 }) {
   const [reason, setReason] = useState('');
 
-  // Lấy ID admin đang đăng nhập từ local (thay chuỗi số 0 nếu cần)
   const getAdminId = () =>
     localStorage.getItem('admin_profile_id') || '00000000-0000-0000-0000-000000000000';
 

@@ -36,4 +36,30 @@ describe('apiClient', () => {
 
     expect(receivedAuth).toBeNull();
   });
+
+  it('[UT-WEB-APICLIENT-003] unwraps the backend response envelope into response.data', async () => {
+    testServer.use(
+      http.get('*/probe', () =>
+        HttpResponse.json({
+          success: true,
+          message: 'OK',
+          data: { totalClients: 1, totalWorkers: 2 },
+          errorCode: null,
+          errors: null,
+        }),
+      ),
+    );
+
+    const response = await apiClient.get('/probe');
+
+    expect(response.data).toEqual({ totalClients: 1, totalWorkers: 2 });
+  });
+
+  it('[UT-WEB-APICLIENT-004] leaves a non-enveloped response body untouched', async () => {
+    testServer.use(http.get('*/probe', () => HttpResponse.json({ ok: true })));
+
+    const response = await apiClient.get('/probe');
+
+    expect(response.data).toEqual({ ok: true });
+  });
 });

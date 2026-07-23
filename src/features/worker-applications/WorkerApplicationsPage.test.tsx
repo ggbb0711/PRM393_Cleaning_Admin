@@ -34,17 +34,6 @@ describe('WorkerApplicationsPage', () => {
     expect(await screen.findByText('012345678901')).toBeInTheDocument();
   });
 
-  it('[UT-WEB-WAPP-002] renders applications from an enveloped response', async () => {
-    login();
-    vi.spyOn(adminApi, 'getWorkerApplications').mockResolvedValue({
-      data: [application],
-    } as unknown as Awaited<ReturnType<typeof adminApi.getWorkerApplications>>);
-
-    renderAdminApp('/worker-applications');
-
-    expect(await screen.findByText('012345678901')).toBeInTheDocument();
-  });
-
   it('[UT-WEB-WAPP-003] shows an error state and supports retry', async () => {
     login();
     const spy = vi

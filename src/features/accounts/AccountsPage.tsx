@@ -11,24 +11,19 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material';
-// Thêm chữ "type" vào trước các Interface để tuân thủ verbatimModuleSyntax
 import { AdminDataTable, type AdminTableColumn } from '../../components/table/AdminDataTable';
 import { adminApi, type AccountAdminDto } from '../../api/adminApi';
 
 export function AccountsPage() {
   const [accounts, setAccounts] = useState<AccountAdminDto[]>([]);
-  // Trạng thái mặc định đã là loading, không cần set lại lúc khởi tạo
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [selectedAccount, setSelectedAccount] = useState<AccountAdminDto | null>(null);
 
   const fetchAccounts = () => {
     adminApi
       .getAccounts()
-      // Thay any bằng unknown và ép kiểu an toàn
-      .then((res: unknown) => {
-        const payload = res as { data?: AccountAdminDto[] };
-        // Lấy data từ vỏ bọc nếu có, không thì lấy trực tiếp
-        setAccounts(payload.data ? payload.data : (res as AccountAdminDto[]));
+      .then((data) => {
+        setAccounts(data);
         setStatus('success');
       })
       .catch(() => setStatus('error'));
@@ -73,10 +68,6 @@ export function AccountsPage() {
         }}
       />
 
-      {/* Sử dụng Key Trick: Gắn key bằng ID của account. 
-        Mỗi khi chọn account khác, React sẽ tự động re-mount component này, 
-        giúp state newStatus bên trong tự reset mà KHÔNG CẦN dùng useEffect.
-      */}
       <ChangeStatusDialog
         key={selectedAccount?.id || 'empty'}
         account={selectedAccount}
@@ -90,7 +81,6 @@ export function AccountsPage() {
   );
 }
 
-// Component Modal nằm ngay bên dưới
 function ChangeStatusDialog({
   account,
   onClose,
@@ -100,7 +90,6 @@ function ChangeStatusDialog({
   onClose: () => void;
   onSuccess: () => void;
 }) {
-  // Lấy giá trị khởi tạo trực tiếp từ prop (an toàn vì component sẽ re-mount khi account thay đổi nhờ prop key ở trên)
   const [newStatus, setNewStatus] = useState(account?.status || '');
 
   const handleSave = () => {
@@ -121,7 +110,7 @@ function ChangeStatusDialog({
             onChange={(e) => setNewStatus(e.target.value)}
           >
             <MenuItem value="Active">Active (Hoạt động)</MenuItem>
-            <MenuItem value="Inactive">Inactive (Khóa)</MenuItem>
+            <MenuItem value="Banned">Banned (Khóa)</MenuItem>
             <MenuItem value="PendingVerification">PendingVerification (Chờ xác thực)</MenuItem>
           </Select>
         </FormControl>

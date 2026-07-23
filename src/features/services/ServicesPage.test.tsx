@@ -34,17 +34,6 @@ describe('ServicesPage', () => {
     expect(await screen.findByText('Don dep theo gio')).toBeInTheDocument();
   });
 
-  it('[UT-WEB-SVC-002] renders services from an enveloped response', async () => {
-    login();
-    vi.spyOn(adminApi, 'getAllServices').mockResolvedValue({
-      data: [service],
-    } as unknown as Awaited<ReturnType<typeof adminApi.getAllServices>>);
-
-    renderAdminApp('/services');
-
-    expect(await screen.findByText('Don dep theo gio')).toBeInTheDocument();
-  });
-
   it('[UT-WEB-SVC-003] creates a new service through the dialog', async () => {
     login();
     vi.spyOn(adminApi, 'getAllServices').mockResolvedValue([]);

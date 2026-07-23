@@ -28,12 +28,10 @@ describe('LoginPage', () => {
     });
     vi.spyOn(apiClient, 'post').mockResolvedValue({
       data: {
-        data: {
-          role: 'Admin',
-          accessToken: 'access-1',
-          refreshToken: 'refresh-1',
-          fullName: 'Quan Tri',
-        },
+        role: 'Admin',
+        accessToken: 'access-1',
+        refreshToken: 'refresh-1',
+        fullName: 'Quan Tri',
       },
     });
 
@@ -68,7 +66,7 @@ describe('LoginPage', () => {
 
   it('[UT-WEB-AUTH-003] rejects a non-admin account without storing tokens', async () => {
     vi.spyOn(apiClient, 'post').mockResolvedValue({
-      data: { data: { role: 'Client', accessToken: 'a', refreshToken: 'r', fullName: 'X' } },
+      data: { role: 'Client', accessToken: 'a', refreshToken: 'r', fullName: 'X' },
     });
 
     renderAdminApp('/login');

@@ -1,7 +1,6 @@
 import { Box, Card, CardContent, CircularProgress, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { adminApi, type AdminDashboardStatsDto, type MaybeEnveloped } from '../../api/adminApi';
-// Import các component cần thiết từ thư viện recharts
+import { adminApi, type AdminDashboardStatsDto } from '../../api/adminApi';
 import {
   BarChart,
   Bar,
@@ -20,14 +19,12 @@ export function DashboardPage() {
   useEffect(() => {
     adminApi
       .getDashboardStats()
-      // Tách vỏ ApiResponse nếu BE đang bọc
-      .then((res: MaybeEnveloped<AdminDashboardStatsDto>) => setStats(res.data ? res.data : res))
+      .then((data) => setStats(data))
       .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <CircularProgress />;
 
-  // 1. Dữ liệu cho các Thẻ thống kê (Cards)
   const summaries = [
     { label: 'Tổng Khách Hàng', value: stats?.totalClients || 0, color: 'primary.main' },
     { label: 'Tổng Thợ', value: stats?.totalWorkers || 0, color: 'secondary.main' },
@@ -39,7 +36,6 @@ export function DashboardPage() {
     },
   ];
 
-  // 2. Dữ liệu cho Biểu đồ (Bỏ doanh thu ra vì lệch thang đo với các số lượng khác)
   const chartData = [
     { name: 'Khách Hàng', 'Số lượng': stats?.totalClients || 0 },
     { name: 'Thợ', 'Số lượng': stats?.totalWorkers || 0 },
@@ -57,7 +53,6 @@ export function DashboardPage() {
         </Typography>
       </Box>
 
-      {/* Khu vực 1: Các Thẻ Thống Kê Tổng Quan */}
       <Box
         sx={{
           display: 'grid',
@@ -79,13 +74,11 @@ export function DashboardPage() {
         ))}
       </Box>
 
-      {/* Khu vực 2: Biểu đồ trực quan */}
       <Card variant="outlined" sx={{ p: 3, boxShadow: 1, borderRadius: 2 }}>
         <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold' }}>
           Biểu đồ Thống kê Số lượng
         </Typography>
 
-        {/* ResponsiveContainer giúp biểu đồ tự động co giãn theo màn hình */}
         <Box sx={{ width: '100%', height: 350 }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
@@ -108,8 +101,8 @@ export function DashboardPage() {
               <Legend wrapperStyle={{ paddingTop: '20px' }} />
               <Bar
                 dataKey="Số lượng"
-                fill="#1976d2" /* Màu xanh chuẩn của MUI Primary */
-                radius={[6, 6, 0, 0]} /* Bo tròn góc trên của cột */
+                fill="#1976d2"
+                radius={[6, 6, 0, 0]}
                 barSize={60}
               />
             </BarChart>
