@@ -15,7 +15,6 @@ import {
   type ServiceDto,
   type CreateServiceDto,
   type UpdateServiceDto,
-  type MaybeEnveloped,
 } from '../../api/adminApi';
 
 export function ServicesPage() {
@@ -24,15 +23,11 @@ export function ServicesPage() {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedService, setSelectedService] = useState<ServiceDto | null>(null);
 
-  // Cập nhật hàm fetchServices gọi API thật
   const fetchServices = async () => {
     try {
       setStatus('loading');
 
-      // Gọi API lấy dữ liệu từ Backend
-      // Data bóc tách từ vỏ bọc nếu Backend có cấu trúc chuẩn như lúc login
-      const responseData = (await adminApi.getAllServices()) as MaybeEnveloped<ServiceDto[]>;
-      const data = responseData.data ? responseData.data : responseData;
+      const data = await adminApi.getAllServices();
 
       setServices(data);
       setStatus('success');
@@ -43,8 +38,6 @@ export function ServicesPage() {
   };
 
   useEffect(() => {
-    // Tránh lỗi gọi setState đồng bộ bằng cách bọc gọi hàm trong setTimeout (chỉ áp dụng ở strict mode nếu cần thiết)
-    // Hoặc đơn giản là gọi thẳng vì bản chất fetchServices đã là async
     setTimeout(() => {
       fetchServices();
     }, 0);
@@ -54,7 +47,6 @@ export function ServicesPage() {
     { id: 'name', header: 'Tên Dịch Vụ', render: (r) => r.name },
     { id: 'price', header: 'Giá Cơ Bản', render: (r) => `${r.basePrice.toLocaleString()} VND` },
     { id: 'minHours', header: 'Giờ tối thiểu', render: (r) => `${r.minimumHours} giờ` },
-    // Có thể thêm cột trạng thái IsActive ở đây nếu cần
     { id: 'isActive', header: 'Trạng thái', render: (r) => (r.isActive ? 'Hoạt động' : 'Đã ẩn') },
   ];
 
@@ -100,9 +92,6 @@ export function ServicesPage() {
   );
 }
 
-// ----------------------------------------------------
-// COMPONENT DIALOG
-// ----------------------------------------------------
 function ServiceFormDialog({
   open,
   service,

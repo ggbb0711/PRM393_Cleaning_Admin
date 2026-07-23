@@ -9,7 +9,6 @@ import {
   Stack,
   Box,
 } from '@mui/material';
-// Thêm chữ "type" để fix lỗi import
 import { AdminDataTable, type AdminTableColumn } from '../../components/table/AdminDataTable';
 import { adminApi, type ServiceDto } from '../../api/adminApi';
 
@@ -20,8 +19,6 @@ export function ServicesPage() {
   const [selectedService, setSelectedService] = useState<ServiceDto | null>(null);
 
   const fetchServices = () => {
-    // Tạm thời set success do chưa có hàm getServices bên backend
-    // Sử dụng setTimeout để tránh lỗi set-state-in-effect (cập nhật state đồng bộ)
     setTimeout(() => {
       setServices([]);
       setStatus('success');
@@ -69,7 +66,6 @@ export function ServicesPage() {
         }}
       />
 
-      {/* Component Dialog nằm ngay trong file này */}
       <ServiceFormDialog
         key={selectedService?.id || 'new'}
         open={openDialog}
@@ -84,9 +80,6 @@ export function ServicesPage() {
   );
 }
 
-// ----------------------------------------------------
-// COMPONENT DIALOG NẰM GỘP CHUNG FILE
-// ----------------------------------------------------
 function ServiceFormDialog({
   open,
   service,
@@ -98,7 +91,6 @@ function ServiceFormDialog({
   onClose: () => void;
   onSuccess: () => void;
 }) {
-  // Lấy dữ liệu mặc định an toàn không cần useEffect
   const [formData, setFormData] = useState<Partial<ServiceDto>>(
     service || {
       name: '',
@@ -111,7 +103,6 @@ function ServiceFormDialog({
   );
 
   const handleSave = () => {
-    // Ép kiểu (cast type) an toàn và loại bỏ "any"
     if (service) {
       adminApi.updateService(service.id, formData as ServiceDto).then(onSuccess);
     } else {

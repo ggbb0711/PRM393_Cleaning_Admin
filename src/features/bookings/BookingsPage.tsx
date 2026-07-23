@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Chip } from '@mui/material';
-// Thêm chữ "type" để fix lỗi import
 import { AdminDataTable, type AdminTableColumn } from '../../components/table/AdminDataTable';
 import { adminApi, type BookingAdminDto } from '../../api/adminApi';
 
@@ -11,9 +10,8 @@ export function BookingsPage() {
   const fetchBookings = () => {
     adminApi
       .getAllBookings()
-      .then((res: unknown) => {
-        const payload = res as { data?: BookingAdminDto[] };
-        setBookings(payload.data ? payload.data : (res as BookingAdminDto[]));
+      .then((data) => {
+        setBookings(data);
         setStatus('success');
       })
       .catch(() => setStatus('error'));

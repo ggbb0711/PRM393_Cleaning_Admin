@@ -34,17 +34,6 @@ describe('AccountsPage', () => {
     expect(screen.getByText('Nguyen Van A')).toBeInTheDocument();
   });
 
-  it('[UT-WEB-ACC-002] renders accounts from an enveloped response', async () => {
-    login();
-    vi.spyOn(adminApi, 'getAccounts').mockResolvedValue({ data: [account] } as unknown as Awaited<
-      ReturnType<typeof adminApi.getAccounts>
-    >);
-
-    renderAdminApp('/accounts');
-
-    expect(await screen.findByText('client@cleanai.local')).toBeInTheDocument();
-  });
-
   it('[UT-WEB-ACC-003] shows an error state and supports retry', async () => {
     login();
     const spy = vi
@@ -77,11 +66,11 @@ describe('AccountsPage', () => {
     expect(screen.getByRole('dialog', { name: 'Đổi trạng thái tài khoản' })).toBeInTheDocument();
 
     await user.click(screen.getByRole('combobox'));
-    await user.click(await screen.findByRole('option', { name: 'Inactive (Khóa)' }));
+    await user.click(await screen.findByRole('option', { name: 'Banned (Khóa)' }));
     await user.click(screen.getByRole('button', { name: 'Lưu' }));
 
     await waitFor(() => {
-      expect(changeStatus).toHaveBeenCalledWith('acc-1', 'Inactive');
+      expect(changeStatus).toHaveBeenCalledWith('acc-1', 'Banned');
     });
   });
 });

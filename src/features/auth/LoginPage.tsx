@@ -33,36 +33,26 @@ export function LoginPage() {
     setIsLoading(true);
 
     try {
-      // Gọi API POST /api/Auth/login (tạm bỏ <AuthResponse> để lấy vỏ bọc)
       const response = await apiClient.post('/Auth/login', {
         emailOrPhone: emailOrPhone,
         password: password,
       });
 
-      // Lấy phần data thực sự nằm bên trong vỏ bọc ApiResponse của .NET
-      // Dùng cú pháp an toàn đề phòng lúc có lúc không bọc
-      const data = response.data.data ? response.data.data : response.data;
+      const data = response.data;
 
-      console.log('Dữ liệu thật bóc ra từ vỏ:', data);
-
-      // Kiểm tra quyền truy cập an toàn, đề phòng data.role bị undefined
       if (!data.role || data.role.toLowerCase() !== 'admin') {
         setError('Tài khoản của bạn không có quyền truy cập không gian quản trị.');
         setIsLoading(false);
         return;
       }
 
-      // Lưu trữ thông tin đăng nhập vào localStorage
       localStorage.setItem('admin_access_token', data.accessToken);
       localStorage.setItem('admin_refresh_token', data.refreshToken);
       localStorage.setItem('admin_full_name', data.fullName);
 
-      // Chuyển hướng vào trang quản trị
       navigate(from, { replace: true });
     } catch (err: unknown) {
-      // Đã sửa lỗi any ở đây
       if (axios.isAxiosError(err)) {
-        // Xử lý lỗi trả về từ backend (AppException)
         if (err.response?.data?.message) {
           setError(err.response.data.message);
         } else {
@@ -88,7 +78,6 @@ export function LoginPage() {
             <Avatar sx={{ m: 1, bgcolor: 'primary.main', width: 48, height: 48 }}>
               <LockOutlined />
             </Avatar>
-            {/* Đã sửa lỗi fontWeight ở đây */}
             <Typography component="h1" variant="h5" sx={{ fontWeight: 'bold' }}>
               CleanAI Admin
             </Typography>

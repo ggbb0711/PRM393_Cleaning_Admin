@@ -35,17 +35,6 @@ describe('BookingsPage', () => {
     expect(screen.getByText('booking-...')).toBeInTheDocument();
   });
 
-  it('[UT-WEB-BOOK-002] renders bookings from an enveloped response', async () => {
-    login();
-    vi.spyOn(adminApi, 'getAllBookings').mockResolvedValue({
-      data: [booking],
-    } as unknown as Awaited<ReturnType<typeof adminApi.getAllBookings>>);
-
-    renderAdminApp('/bookings');
-
-    expect(await screen.findByText('250,000 VND')).toBeInTheDocument();
-  });
-
   it('[UT-WEB-BOOK-003] shows an error state and supports retry', async () => {
     login();
     const spy = vi

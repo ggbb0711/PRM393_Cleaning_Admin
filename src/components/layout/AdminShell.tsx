@@ -32,7 +32,6 @@ export function AdminShell() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Danh sách các menu điều hướng
   const menuItems = [
     { title: 'Dashboard', path: '/', icon: <DashboardRounded /> },
     { title: 'Duyệt thợ', path: '/worker-applications', icon: <AssignmentIndRounded /> },

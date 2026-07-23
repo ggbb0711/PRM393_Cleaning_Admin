@@ -1,9 +1,4 @@
-// src/app/api/adminApi.ts
 import { apiClient } from './apiClient';
-
-// Some backend responses come back already unwrapped, others still wrapped in the
-// {data: T} envelope — callers unwrap defensively with `res.data ?? res`.
-export type MaybeEnveloped<T> = T & { data?: T };
 
 export interface AdminDashboardStatsDto {
   totalClients: number;
@@ -42,7 +37,7 @@ export interface ServiceDto {
   basePrice: number;
   minimumHours: number;
   isActive: boolean;
-  bookingFormSchema?: string; // Bổ sung schema nếu cần dùng ở table
+  bookingFormSchema?: string;
 }
 
 export interface CreateServiceDto {
@@ -92,7 +87,6 @@ export const adminApi = {
   rejectWorker: (id: string, adminId: string, reason: string) =>
     apiClient.put(`/Admin/worker-applications/${id}/reject`, { adminId, reason }),
 
-  // --- THÊM HÀM LẤY DANH SÁCH TẤT CẢ DỊCH VỤ VÀO ĐÂY ---
   getAllServices: () => apiClient.get<ServiceDto[]>('/Admin/services').then((res) => res.data),
   createService: (data: CreateServiceDto) =>
     apiClient.post<ServiceDto>('/Admin/services', data).then((res) => res.data),
